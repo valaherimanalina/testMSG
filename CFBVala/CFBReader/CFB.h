@@ -23,10 +23,3 @@
 #import <CFB/CFBStream.h>
 #import <CFB/CFBStorage.h>
 #import <CFB/CFBFile.h>
-
-#import <CFB/CFBProtectedFile.h>
-#import <CFB/CFBProtectedDocument.h>
-#import <CFB/CFBProtectedMessage.h>
-
-#import <CFB/CFBProtectedMessageContent.h>
-#import <CFB/CFBProtectedAttachment.h>

@@ -80,7 +80,6 @@
         return nil;
     
     NSData *data = [[NSData alloc] initWithBytesNoCopy:( (void *)([_data bytes] + range.location) ) length:range.length freeWhenDone:NO];
-    //NSData *data = [[NSData alloc] init];
     
     NSAssert( data.length == range.length, @"Failed to read correct number of bytes" );
     

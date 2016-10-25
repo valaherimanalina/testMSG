@@ -57,7 +57,7 @@
 - (NSString *)name
 {
     // cbEntryName is a byte length, not a unichar length and includes the zero terminating unichar
-    return [NSString stringWithCharacters:(const unichar*)&_entry.szEntryName[0] length:(_entry.cbEntryName - 2) >> 1];
+    return [NSString stringWithCharacters:&_entry.szEntryName[0] length:(_entry.cbEntryName - 2) >> 1];
 }
 
 - (void)setName:(NSString *)name
@@ -69,7 +69,7 @@
     memset( &_entry.szEntryName, 0, sizeof( _entry.szEntryName ) );
     
     _entry.cbEntryName = ( name.length + 1 ) << 1;
-    [name getCharacters:(unichar *)&_entry.szEntryName[0]];
+    [name getCharacters:&_entry.szEntryName[0]];
 }
 
 - (u_int32_t)left
