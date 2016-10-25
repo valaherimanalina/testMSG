@@ -378,6 +378,8 @@
 // Create a new file allocation table
 - (BOOL)createFileAllocationTable:(id<CFBSource>)source error:(NSError * __autoreleasing *)error
 {
+#pragma unused( error )
+    
     NSParameterAssert( source != nil );
     NSParameterAssert( [source isReadOnly] == NO );
     
@@ -396,6 +398,8 @@
 // Create a new directory with a root storage
 - (BOOL)createDirectory:(id<CFBSource>)source error:(NSError * __autoreleasing *)error
 {
+#pragma unused( error )
+    
     NSParameterAssert( source != nil );
     NSParameterAssert( [source isReadOnly] == NO );
     
@@ -426,6 +430,8 @@
 // Create a header for a new file
 - (BOOL)createHeader:(id<CFBSource>)source error:(NSError * __autoreleasing *)error
 {
+#pragma unused( error )
+    
     NSParameterAssert( source != nil );
     NSParameterAssert( [source isReadOnly] == NO );
     
@@ -479,6 +485,8 @@
 // Initialize the directory
 - (BOOL)loadDirectory:(NSError * __autoreleasing *)error
 {
+#pragma unused( error )
+    
     // There are up to 4 directory entries in a directory sector.
     // Additional sectors may exist and are found by following the
     // chain in the FAT sector. Version 4 files have a count of
@@ -609,11 +617,6 @@
     // Get the root directory entry and verify it before loading it
     CFBDirectoryEntry *rootEntry = [self directoryEntryAtIndex:0];
     
-    NSLog(@"CFB_ROOT_OBJECT: %d", CFB_ROOT_OBJECT);
-    //NSLog(@"%@", [self directoryEntryAtIndex:1]);
-    //NSLog(@"%@", [self directoryEntryAtIndex:2]);
-    //NSLog(@"%@", [self directoryEntryAtIndex:3]);
-    
     NSAssert( rootEntry.objectType == CFB_ROOT_OBJECT, @"Root must be a storage" );
     NSAssert( [rootEntry.name isEqualToString:@"Root Entry"], @"Root must be named Root Entry" );
     
@@ -655,11 +658,6 @@
     if ( index == NOSTREAM )
         return nil;
     
-    for (int i=0; i<_directory.count; i++)
-    {
-        NSLog(@"objectType%d: %hhu@", i, [[_directory objectAtIndex:i] objectType]);
-    }
- 
     return [_directory objectAtIndex:index];
 }
 

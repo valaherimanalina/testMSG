@@ -31,8 +31,14 @@
     [NSThread detachNewThreadSelector:@selector(loadingData) toTarget:self withObject:nil];
 }
 
-- (void)loadingData{
-    
+- (void)loadingData
+{
+    // Unless they have been downloaded, there are no documents in the app. As a test case, we load a single document
+    // from the embedded resources in the application.
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"MailDemo/test" ofType:@"msg"];
+
+    [self.array addObject:path];
+    /*
     NSString *path = [NSString stringWithFormat:@"%@/Documents/MailDemo/",NSHomeDirectory()];
     NSMutableArray *sourceFiles = [NSMutableArray arrayWithArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil]];
     
@@ -43,6 +49,7 @@
             [self.array addObject:str];
         }
     }
+    */
     [self.tableView reloadData];
 }
 
@@ -71,7 +78,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     NSString *name = [self.array objectAtIndex:indexPath.row];
-    NSString *path = [NSString stringWithFormat:@"%@/Documents/MailDemo/%@",NSHomeDirectory(),name];
+    // The name is the path, no need to construct something else
+    NSString *path = name;
+    //NSString *path = [NSString stringWithFormat:@"%@/Documents/MailDemo/%@",NSHomeDirectory(),name];
     
 
     
@@ -136,36 +145,27 @@
 
 - (void)testCompoundFileForReadingDoc:(NSString*)filePath
 {
-    for ( int i = 1; ; i++ )
+    if ( filePath )
     {
-        //filePath = [[NSBundle bundleForClass:[self class]] pathForResource:[NSString stringWithFormat:@"document-%d", i] ofType:@"doc"];
+        NSLog( @"read : %@", filePath);
         
-        if ( filePath )
-        {
-            NSLog( @"read : %@", filePath);
-            
-            NSError      *error      = nil;
-            NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
-            NSData       *fileData   = [fileHandle readDataToEndOfFile];
-            
-            NSLog(@"filedata : %@", fileData);
-            
-            [fileHandle closeFile];
-            
-            CFBFile    *file       = nil;
-            
-            file = [CFBFile compoundFileForReadingAtPath:filePath];
-            
-            NSAssert(file != nil, @"Failed to load document-%d as file: %@", i, error.localizedDescription );
-            
-            file = [CFBFile compoundFileForReadingWithData:fileData];
-            
-            NSAssert(file != nil, @"Failed to load document-%d as data: %@", i, error.localizedDescription );
-        }
-        else
-        {
-            break;
-        }
+        NSError      *error      = nil;
+        NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
+        NSData       *fileData   = [fileHandle readDataToEndOfFile];
+        
+        //NSLog(@"filedata : %@", fileData);
+        
+        [fileHandle closeFile];
+        
+        CFBFile    *file       = nil;
+        
+        file = [CFBFile compoundFileForReadingAtPath:filePath];
+        
+        NSAssert(file != nil, @"Failed to load file: %@", filePath, error.localizedDescription );
+        
+        file = [CFBFile compoundFileForReadingWithData:fileData];
+        
+        NSAssert(file != nil, @"Failed to load data: %@", filePath, error.localizedDescription );
     }
 }
 

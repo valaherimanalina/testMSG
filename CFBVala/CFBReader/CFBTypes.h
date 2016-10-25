@@ -15,12 +15,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#import <UIKit/UIKit.h> 
-#import <stdint.h>
 
+#import <Foundation/Foundation.h>
 
 #pragma mark - File Header
-//typedef  uint32_t u_int32_t;
+
 typedef struct _MSCFB_Header
 {
     u_int32_t signature[2];
@@ -46,7 +45,6 @@ typedef struct _MSCFB_Header
 
 #define MSCFB_SIGNATURE_1 (u_int32_t)0xE011CFD0
 #define MSCFB_SIGNATURE_2 (u_int32_t)0xE11AB1A1
-
 
 #pragma mark - FAT Table
 
@@ -74,7 +72,7 @@ typedef struct _MSCFB_DIFAT_Sector
 
 typedef struct _MSCFB_DirectoryEntry
 {
-    char   *szEntryName[32];
+    unichar   szEntryName[32];
     u_int16_t cbEntryName;
     Byte      objectType;
     Byte      color;
