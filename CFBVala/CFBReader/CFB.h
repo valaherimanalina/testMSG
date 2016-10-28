@@ -18,8 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import <CFB/CFBError.h>
-#import <CFB/CFBObject.h>
-#import <CFB/CFBStream.h>
-#import <CFB/CFBStorage.h>
-#import <CFB/CFBFile.h>
+#import <CFBError.h>
+#import <CFBObject.h>
+#import <CFBStream.h>
+#import <CFBStorage.h>
+#import <CFBFile.h>
