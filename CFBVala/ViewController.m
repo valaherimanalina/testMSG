@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "CFBReader/CFBFile.h"
+#import "CFBReader/CFB.h"
 
 @interface ViewController ()
 {
@@ -163,10 +163,58 @@
         
         NSAssert(file != nil, @"Failed to load file: %@", filePath, error.localizedDescription );
         
+        [[file allValues] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ( [obj isKindOfClass:[CFBStream class]] )
+            {
+                CFBStream *stream = (CFBStream *)obj;
+                
+                NSLog( @"Reading stream %@", [stream name] );
+                
+                [stream readAll];
+            }
+            else
+            {
+                CFBStorage *storage = (CFBStorage *)obj;
+                
+                NSLog( @"Reading storage %@", [storage name] );
+                
+                [self readStorage:storage];
+            }
+            
+            *stop = NO;
+        }];
+        
         file = [CFBFile compoundFileForReadingWithData:fileData];
         
         NSAssert(file != nil, @"Failed to load data: %@", filePath, error.localizedDescription );
     }
 }
+
+
+- (void)readStorage:(CFBStorage *)container
+{
+    [[container allValues] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ( [obj isKindOfClass:[CFBStream class]] )
+        {
+            CFBStream *stream = (CFBStream *)obj;
+            
+            NSLog( @"Reading storage %@, stream %@", [container name], [stream name] );
+            
+            [stream readAll];
+        }
+        else
+        {
+            CFBStorage *storage = (CFBStorage *)obj;
+            
+            NSLog( @"Reading storage %@, storage %@", [container name], [storage name] );
+            
+            [self readStorage:storage];
+        }
+        
+        *stop = NO;
+    }];
+    
+}
+
 
 @end
